@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>Shorts Upload</title>
+<meta name="description" content="Shorts Upload is a personal tool that uploads one creator's own Twitch stream clips as YouTube Shorts to the creator's own YouTube channels. Not offered to the public.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%232a55c6'/%3E%3Cpath%20d='M32%2012%2050%2032H39v20H25V32H14z'%20fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light dark;--bg:#f8f9fb;--surface:#ffffff;--text:#1b1d22;--muted:#545a65;--border:#dcdfe5;--accent:#2a55c6;--accent-hover:#1c3d96;--on-accent:#ffffff;--code-bg:#edf0f5;--note-bg:#edf2fd;--note-border:#c6d4f3;--radius:12px}
+@media (prefers-color-scheme:dark){:root{--bg:#111317;--surface:#181b21;--text:#e6e8ec;--muted:#a2a8b4;--border:#2c313a;--accent:#8db0ff;--accent-hover:#b8ceff;--on-accent:#0c1424;--code-bg:#222731;--note-bg:#162036;--note-border:#2a3b61}}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 1.0625rem/1.65 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;overflow-wrap:break-word}
+a{color:var(--accent);text-underline-offset:.15em}
+a:hover{color:var(--accent-hover)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:46rem;margin:0 auto;padding:0 16px}
+@media (min-width:40rem){.wrap{padding:0 24px}}
+.skip{position:absolute;left:-9999px;top:0}
+.skip:focus{left:16px;top:8px;z-index:10;background:var(--surface);color:var(--text);padding:.5rem .8rem;border:1px solid var(--border);border-radius:8px}
+.site-header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--border)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:3.25rem}
+.brand{font-weight:700;font-size:1.05rem;color:var(--text);text-decoration:none;letter-spacing:-.01em}
+.brand:hover{color:var(--accent)}
+.lang-switch{display:flex;gap:.4rem}
+.lang-switch a{font-size:.85rem;line-height:1;padding:.45rem .7rem;border:1px solid var(--border);border-radius:999px;color:var(--text);text-decoration:none;background:var(--surface)}
+.lang-switch a:hover{border-color:var(--accent);color:var(--accent)}
+.hero{padding:2.5rem 0 1.5rem}
+h1{font-size:clamp(2.1rem,7vw,2.9rem);line-height:1.1;letter-spacing:-.02em;margin:0 0 .6rem}
+.h1-sub{display:block;font-size:.5em;line-height:1.3;font-weight:600;letter-spacing:0;color:var(--muted);margin-top:.5rem}
+.subtitle{font-size:1.15rem;color:var(--muted);margin:0 0 .35rem}
+.lang-block{border-top:1px solid var(--border);padding:1.75rem 0 1.5rem}
+.lang-hint{font-size:.9rem;color:var(--muted);margin:0 0 .5rem}
+h2{font-size:1.65rem;line-height:1.2;letter-spacing:-.01em;margin:.25rem 0 .75rem}
+h3{font-size:1.2rem;line-height:1.3;margin:2.1rem 0 .6rem}
+h2,h3{text-wrap:balance}
+[id]{scroll-margin-top:4.5rem}
+p,ul,ol,dl{margin:0 0 1rem}
+ul,ol{padding-left:1.35rem}
+li{margin:.3rem 0}
+li::marker{color:var(--muted)}
+[lang="de"] p,[lang="de"] li,[lang="de"] dd{-webkit-hyphens:auto;hyphens:auto}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:.88em;background:var(--code-bg);padding:.1em .35em;border-radius:5px;overflow-wrap:anywhere}
+.url{overflow-wrap:anywhere}
+.meta{color:var(--muted);font-size:.95rem}
+.note{background:var(--note-bg);border:1px solid var(--note-border);border-radius:var(--radius);padding:.95rem 1.1rem;margin:1.25rem 0}
+.note p:last-child{margin-bottom:0}
+.actions{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.25rem 0 .5rem}
+.btn{display:inline-block;padding:.6rem 1.05rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);text-decoration:none;font-weight:600;line-height:1.3}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:var(--on-accent)}
+.scopes{display:grid;gap:.75rem;margin:1rem 0 1.25rem}
+.scopes>*{min-width:0}
+.scope{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.05rem}
+.scope dt{display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem .5rem;font-weight:650;margin:0 0 .4rem}
+.scope dt code{font-weight:400;max-width:100%}
+.scope dd{margin:0}
+.scope dd p{margin:0 0 .5rem}
+.scope dd p:last-child{margin-bottom:0}
+.stored{list-style:none;padding:0}
+.stored li{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;margin:.6rem 0}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;margin:1.25rem 0 1.5rem}
+.toc-title{font-weight:650;margin:0 0 .35rem}
+.toc ol{margin:0;padding-left:1.6rem;columns:2 15rem;column-gap:2rem}
+.toc li{margin:0;padding:.15rem 0;break-inside:avoid}
+.site-footer{border-top:1px solid var(--border);padding:1.75rem 0 2.5rem;color:var(--muted);font-size:.92rem}
+.footer-links{list-style:none;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;padding:0;margin:0 0 .6rem}
+.footer-links li{margin:0}
+.site-footer p{margin:.6rem 0 0}
+@media print{.site-header{position:static}.lang-switch,.skip{display:none}a{color:inherit}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html" aria-current="page">Shorts Upload</a>
+    <nav class="lang-switch" aria-label="Language / Sprache">
+      <a href="#en" lang="en">English</a>
+      <a href="#de" lang="de">Deutsch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+
+<div class="hero">
+  <h1>Shorts Upload</h1>
+  <p class="subtitle">A personal tool that uploads one creator’s own Twitch clips as YouTube Shorts to the creator’s own channels.</p>
+  <p class="subtitle" lang="de">Ein privates Werkzeug, das die eigenen Twitch-Clips eines Creators als YouTube Shorts auf dessen eigene Kanäle hochlädt.</p>
+</div>
+
+<section id="en" class="lang-block" lang="en" aria-labelledby="en-title">
+  <p class="lang-hint" lang="de">Deutsche Fassung: <a href="#de">weiter unten&nbsp;↓</a></p>
+  <h2 id="en-title">About Shorts&nbsp;Upload</h2>
+  <p>Shorts Upload is a small personal tool of one creator, the Twitch streamer Musaabi. It uploads short clips from Musaabi’s own Twitch live streams as YouTube Shorts to Musaabi’s own YouTube channels. To do this, it uses YouTube API Services (the YouTube Data API v3).</p>
+  <div class="note">
+    <p><strong>Not a public service.</strong> Shorts Upload is not offered to anyone else: there is no download, no sign-up, no user accounts and no advertising. Its only user is Musaabi, and only Google accounts that belong to Musaabi are connected to it.</p>
+  </div>
+  <p class="actions"><a class="btn btn-primary" href="privacy.html">Privacy Policy</a> <a class="btn" href="terms.html">Terms of Use</a></p>
+
+  <h3 id="en-how">How it works</h3>
+  <ul>
+    <li>Shorts Upload is a command-line program that runs only on Musaabi’s own Windows PC. There is no server and no web or mobile app.</li>
+    <li>Short vertical clips are made from Musaabi’s own stream recordings. For each clip folder, Musaabi prepares a text file with the title, description, hashtags and tags for its clips and a score for each clip; the clips with the highest score are uploaded first. A clip without a prepared title and description is never uploaded.</li>
+    <li>Windows Task Scheduler starts the tool three times a day. Each run uploads at most one clip per channel, so a channel receives at most three new videos per day.</li>
+    <li>Shorts Upload is designed so that each clip is uploaded only once, to one channel: every successful upload is recorded, and a recorded clip is never uploaded again.</li>
+    <li>Each upload uses the visibility (public, unlisted or private) and the “made for kids” declaration (yes or no) that Musaabi set in the tool’s settings and confirmed when the channel was connected.</li>
+    <li>Google accounts are connected through Google’s own sign-in page in the web browser. Shorts Upload never sees or stores a Google password.</li>
+  </ul>
+
+  <h3 id="en-data">Google and YouTube data it uses</h3>
+  <p>For each connected Google account, Shorts Upload asks for the following permissions and uses each one only for the purpose shown:</p>
+  <dl class="scopes">
+    <div class="scope">
+      <dt><code>https://www.googleapis.com/auth/<wbr>youtube.upload</code></dt>
+      <dd>Upload videos to the connected YouTube channel.</dd>
+    </div>
+    <div class="scope">
+      <dt><code>https://www.googleapis.com/auth/<wbr>youtube.readonly</code></dt>
+      <dd>Read the name of the connected channel, to confirm which channel receives the uploads.</dd>
+    </div>
+    <div class="scope">
+      <dt><code>https://www.googleapis.com/auth/<wbr>userinfo.email</code> <code>openid</code></dt>
+      <dd>When an account is connected, read its email address, to confirm that the intended Google account was used.</dd>
+    </div>
+  </dl>
+  <p>Everything Shorts Upload stores stays on Musaabi’s PC. Data is sent only to Google and YouTube, as far as these functions need it. It is never sold, never shared with anyone else, never used for advertising and never used to train AI models. The <a href="privacy.html">Privacy Policy</a> explains the details.</p>
+  <div class="note">
+    <p><strong>Limited Use:</strong> Shorts Upload’s use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+  </div>
+
+  <h3 id="en-revoke">Disconnecting and revoking access</h3>
+  <p>A channel can be disconnected at any time with the command <code>upload_shorts.py abmelden &lt;account&gt;</code>. It revokes Shorts Upload’s access at Google, deletes the stored sign-in token and deletes the YouTube data stored for that account. Access can also be removed on Google’s security settings page: <a class="url" href="https://security.google.com/settings/security/permissions">https://security.google.com/settings/security/permissions</a></p>
+
+  <h3 id="en-docs">Privacy and terms</h3>
+  <ul>
+    <li><a href="privacy.html">Privacy Policy</a>: which data Shorts Upload uses, where it is stored and how it is deleted.</li>
+    <li><a href="terms.html">Terms of Use</a>: the rules for using Shorts Upload, including the YouTube Terms of Service.</li>
+    <li><a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a> and <a href="http://www.google.com/policies/privacy">Google Privacy Policy</a></li>
+  </ul>
+
+  <h3 id="en-independent">Independent project</h3>
+  <p>Shorts Upload is an independent private project. It is not affiliated with, sponsored by or endorsed by YouTube or Google. YouTube is a trademark of Google LLC.</p>
+
+  <h3 id="en-contact">Contact</h3>
+  <p>Questions about Shorts Upload: <a href="mailto:musaabii47@gmail.com">musaabii47@gmail.com</a></p>
+</section>
+
+<section id="de" class="lang-block" lang="de" aria-labelledby="de-title">
+  <p class="lang-hint" lang="en">English version: <a href="#en">above&nbsp;↑</a></p>
+  <h2 id="de-title">Über Shorts&nbsp;Upload</h2>
+  <p>Shorts Upload ist ein kleines privates Werkzeug eines einzelnen Creators, des Twitch-Streamers Musaabi. Es lädt kurze Clips aus Musaabis eigenen Twitch-Livestreams als YouTube Shorts auf Musaabis eigene YouTube-Kanäle hoch. Dafür nutzt es die YouTube API Services (die YouTube Data API v3).</p>
+  <div class="note">
+    <p><strong>Kein öffentlicher Dienst.</strong> Shorts Upload wird niemandem sonst angeboten: Es gibt keinen Download, keine Registrierung, keine Benutzerkonten und keine Werbung. Einziger Nutzer ist Musaabi, und verbunden werden nur Google-Konten, die Musaabi gehören.</p>
+  </div>
+  <p class="actions"><a class="btn btn-primary" href="privacy.html#de">Datenschutzerklärung</a> <a class="btn" href="terms.html#de">Nutzungsbedingungen</a></p>
+
+  <h3 id="de-ablauf">So funktioniert es</h3>
+  <ul>
+    <li>Shorts Upload ist ein Kommandozeilenprogramm und läuft nur auf Musaabis eigenem Windows-PC. Es gibt keinen Server und keine Web- oder Handy-App.</li>
+    <li>Aus Musaabis eigenen Stream-Aufnahmen entstehen kurze Clips im Hochformat. Für jeden Clip-Ordner bereitet Musaabi eine Textdatei mit Titel, Beschreibung, Hashtags und Tags für seine Clips und einem Score je Clip vor; die Clips mit dem höchsten Score werden zuerst hochgeladen. Ein Clip ohne vorbereiteten Titel und vorbereitete Beschreibung wird nie hochgeladen.</li>
+    <li>Die Windows-Aufgabenplanung startet das Programm dreimal am Tag. Jeder Lauf lädt höchstens einen Clip pro Kanal hoch – ein Kanal bekommt also höchstens drei neue Videos pro Tag.</li>
+    <li>Shorts Upload ist so gebaut, dass jeder Clip nur einmal und nur auf einen Kanal hochgeladen wird: Jeder erfolgreiche Upload wird vermerkt, und ein vermerkter Clip wird nie erneut hochgeladen.</li>
+    <li>Jeder Upload verwendet die Sichtbarkeit (öffentlich, nicht gelistet oder privat) und die Angabe „speziell für Kinder“ (ja oder nein), die Musaabi in den Einstellungen festgelegt und beim Verbinden des Kanals bestätigt hat.</li>
+    <li>Google-Konten werden über die Anmeldeseite von Google im Webbrowser verbunden. Shorts Upload sieht und speichert keine Google-Passwörter.</li>
+  </ul>
+
+  <h3 id="de-daten">Welche Google- und YouTube-Daten es nutzt</h3>
+  <p>Für jedes verbundene Google-Konto fragt Shorts Upload die folgenden Berechtigungen an und nutzt jede nur für den genannten Zweck:</p>
+  <dl class="scopes">
+    <div class="scope">
+      <dt><code>https://www.googleapis.com/auth/<wbr>youtube.upload</code></dt>
+      <dd>Videos auf den verbundenen YouTube-Kanal hochladen.</dd>
+    </div>
+    <div class="scope">
+      <dt><code>https://www.googleapis.com/auth/<wbr>youtube.readonly</code></dt>
+      <dd>Den Namen des verbundenen Kanals lesen, um zu bestätigen, welcher Kanal die Uploads erhält.</dd>
+    </div>
+    <div class="scope">
+      <dt><code>https://www.googleapis.com/auth/<wbr>userinfo.email</code> <code>openid</code></dt>
+      <dd>Beim Verbinden eines Kontos dessen E-Mail-Adresse lesen, um zu bestätigen, dass das vorgesehene Google-Konto verwendet wurde.</dd>
+    </div>
+  </dl>
+  <p>Alles, was Shorts Upload speichert, bleibt auf Musaabis PC. Daten gehen nur an Google und YouTube, soweit diese Funktionen es erfordern. Sie werden nie verkauft, nie an andere weitergegeben, nie für Werbung genutzt und nie zum Training von KI-Modellen verwendet. Einzelheiten stehen in der <a href="privacy.html#de">Datenschutzerklärung</a>.</p>
+  <div class="note">
+    <p><strong>Eingeschränkte Nutzung (Limited Use):</strong> Die Nutzung und Weitergabe von Informationen, die Shorts Upload über Google-APIs erhält, entspricht der <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a> einschließlich der Anforderungen zur eingeschränkten Nutzung (Limited Use requirements).</p>
+  </div>
+
+  <h3 id="de-widerruf">Verbindung trennen und Zugriff widerrufen</h3>
+  <p>Ein Kanal lässt sich jederzeit mit dem Befehl <code>upload_shorts.py abmelden &lt;konto&gt;</code> trennen. Der Befehl widerruft den Zugriff von Shorts Upload bei Google, löscht das gespeicherte Anmelde-Token und löscht die für dieses Konto gespeicherten YouTube-Daten. Außerdem lässt sich der Zugriff auf der Google-Seite für Sicherheitseinstellungen entfernen: <a class="url" href="https://security.google.com/settings/security/permissions">https://security.google.com/settings/security/permissions</a></p>
+
+  <h3 id="de-dokumente">Datenschutz und Bedingungen</h3>
+  <ul>
+    <li><a href="privacy.html#de">Datenschutzerklärung</a>: welche Daten Shorts Upload nutzt, wo sie gespeichert und wie sie gelöscht werden.</li>
+    <li><a href="terms.html#de">Nutzungsbedingungen</a>: die Regeln für die Nutzung von Shorts Upload, einschließlich der Nutzungsbedingungen von YouTube.</li>
+    <li><a href="https://www.youtube.com/t/terms">Nutzungsbedingungen von YouTube</a> und <a href="http://www.google.com/policies/privacy">Datenschutzerklärung von Google</a></li>
+  </ul>
+
+  <h3 id="de-unabhaengig">Unabhängiges Projekt</h3>
+  <p>Shorts Upload ist ein unabhängiges privates Projekt. Es steht in keiner Verbindung zu YouTube oder Google und wird von ihnen weder gesponsert noch befürwortet. YouTube ist eine Marke der Google LLC.</p>
+
+  <h3 id="de-kontakt">Kontakt</h3>
+  <p>Fragen zu Shorts Upload: <a href="mailto:musaabii47@gmail.com">musaabii47@gmail.com</a></p>
+</section>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <ul class="footer-links">
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Use</a></li>
+        <li><a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a></li>
+        <li><a href="http://www.google.com/policies/privacy">Google Privacy Policy</a></li>
+      </ul>
+      <ul class="footer-links" lang="de">
+        <li><a href="index.html#de" aria-current="page">Startseite</a></li>
+        <li><a href="privacy.html#de">Datenschutzerklärung</a></li>
+        <li><a href="terms.html#de">Nutzungsbedingungen</a></li>
+        <li><a href="https://www.youtube.com/t/terms">Nutzungsbedingungen von YouTube</a></li>
+        <li><a href="http://www.google.com/policies/privacy">Datenschutzerklärung von Google</a></li>
+      </ul>
+    </nav>
+    <p>Shorts Upload is an independent private project and is not affiliated with, sponsored by or endorsed by YouTube or Google. <span lang="de">Shorts Upload ist ein unabhängiges privates Projekt ohne Verbindung zu YouTube oder Google und wird von ihnen weder gesponsert noch befürwortet.</span></p>
+    <p>Contact / <span lang="de">Kontakt</span>: <a href="mailto:musaabii47@gmail.com">musaabii47@gmail.com</a></p>
+  </div>
+</footer>
+</body>
+</html>
